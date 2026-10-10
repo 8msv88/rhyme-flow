@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Rhyme Flow — freestyle rap practice. Land rhymes on the beat with a bouncing ball. Free, no account." />
+  <title>Rhyme Flow — Freestyle on the Beat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo" id="logoBtn">
+        <span class="logo-icon">🎤</span>
+        <span class="logo-text">RHYME<span class="accent">FLOW</span></span>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="play">Play</button>
+        <button class="nav-btn" data-view="dictionary">Rhymes</button>
+        <button class="nav-btn" data-view="stats">Stats</button>
+      </nav>
+    </header>
+
+    <!-- PLAY VIEW -->
+    <main id="view-play" class="view active">
+      <!-- Setup Screen -->
+      <section id="setup" class="setup">
+        <div class="hero">
+          <h1>Land the rhyme.<br><span class="gradient-text">Own the beat.</span></h1>
+          <p class="subtitle">A bouncing ball marks every beat. Say the word when it lands. That's freestyle practice.</p>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-card">
+            <label>Beat</label>
+            <div class="beat-row">
+              <select id="bpmSelect">
+                <option value="85">Chill · 85 BPM</option>
+                <option value="95">Boom Bap · 95 BPM</option>
+                <option value="110" selected>Bizzle · 110 BPM</option>
+                <option value="125">Trap · 125 BPM</option>
+                <option value="140">Drill · 140 BPM</option>
+              </select>
+              <button id="tapTempo" class="ghost-btn" title="Tap tempo">Tap</button>
+            </div>
+          </div>
+
+          <div class="control-card">
+            <label>Theme</label>
+            <select id="themeSelect"></select>
+          </div>
+
+          <div class="control-card">
+            <label>Difficulty</label>
+            <select id="diffSelect">
+              <option value="beginner">Beginner · All words</option>
+              <option value="intermediate" selected>Intermediate · First only</option>
+              <option value="advanced">Advanced · Last only</option>
+              <option value="expert">Expert · Sound only</option>
+            </select>
+          </div>
+
+          <div class="control-card">
+            <label>Scheme</label>
+            <select id="schemeSelect">
+              <option value="AABB">AABB · Couplets</option>
+              <option value="AAAA">AAAA · Monorhyme</option>
+              <option value="ABAB">ABAB · Alternating</option>
+            </select>
+          </div>
+
+          <div class="control-card">
+            <label>Bars</label>
+            <div class="segmented">
+              <button class="seg-btn" data-bars="8">8</button>
+              <button class="seg-btn active" data-bars="16">16</button>
+              <button class="seg-btn" data-bars="32">32</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="start-row">
+          <button id="startBtn" class="primary-btn large">
+            <span class="play-icon">▶</span> Start Session
+          </button>
+          <p class="hint">Headphones recommended · No mic required</p>
+        </div>
+      </section>
+
+      <!-- Game Screen -->
+      <section id="game" class="game hidden">
+        <div class="game-top">
+          <div class="meter">
+            <span id="barCount">Bar 1 / 16</span>
+            <span id="bpmDisplay">110 BPM</span>
+          </div>
+          <button id="stopBtn" class="ghost-btn">End</button>
+        </div>
+
+        <!-- The stage -->
+        <div class="stage">
+          <div class="track" id="track">
+            <!-- Word cards will be injected -->
+          </div>
+          <div class="ball-container">
+            <div id="ball" class="ball"></div>
+            <div class="beat-markers">
+              <span></span><span></span><span></span><span class="drop"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="current-word-area">
+          <div id="currentWord" class="current-word">—</div>
+          <div id="wordHint" class="word-hint"></div>
+        </div>
+
+        <div class="game-footer">
+          <div class="progress-bar"><div id="progressFill" class="fill"></div></div>
+          <div class="score-line">
+            <span>Hits <strong id="hitCount">0</strong></span>
+            <span>Misses <strong id="missCount">0</strong></span>
+            <span>Streak <strong id="streakCount">0</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Screen -->
+      <section id="results" class="results hidden">
+        <div class="results-card">
+          <h2>Session Complete</h2>
+          <div class="big-score" id="finalScore">0%</div>
+          <div class="results-stats">
+            <div><span class="label">Hits</span><span id="resHits">0</span></div>
+            <div><span class="label">Misses</span><span id="resMisses">0</span></div>
+            <div><span class="label">Best Streak</span><span id="resStreak">0</span></div>
+            <div><span class="label">Bars</span><span id="resBars">0</span></div>
+          </div>
+          <div class="results-actions">
+            <button id="againBtn" class="primary-btn">Play Again</button>
+            <button id="setupBtn" class="ghost-btn">Change Settings</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- DICTIONARY VIEW -->
+    <main id="view-dictionary" class="view">
+      <div class="dict-header">
+        <h2>Rhyme Dictionary</h2>
+        <p>Type a word to see matching rhyme families</p>
+        <input type="text" id="dictInput" placeholder="e.g. pain, money, flow…" autocomplete="off" />
+      </div>
+      <div id="dictResults" class="dict-results"></div>
+    </main>
+
+    <!-- STATS VIEW -->
+    <main id="view-stats" class="view">
+      <div class="stats-grid">
+        <div class="stat-card highlight">
+          <span class="stat-value" id="statStreak">0</span>
+          <span class="stat-label">Day Streak</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="statSessions">0</span>
+          <span class="stat-label">Sessions</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="statBars">0</span>
+          <span class="stat-label">Total Bars</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="statBest">0%</span>
+          <span class="stat-label">Best Score</span>
+        </div>
+      </div>
+      <div class="history-section">
+        <h3>Recent Sessions</h3>
+        <ul id="historyList" class="history-list"></ul>
+      </div>
+      <button id="resetStats" class="ghost-btn danger">Reset All Stats</button>
+    </main>
+  </div>
+
+  <script src="data/rhymes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
